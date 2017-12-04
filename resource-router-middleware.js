@@ -13,7 +13,7 @@ module.exports = function ResourceRouter(route) {
 	if (route.load) {
 		router.param(route.id, function(req, res, next, id) {
 			route.load(req, id, function(err, data) {
-				if (err) return res.status(404).send(err);
+				if (err) return (route.onError) ? route.onError(err, req, res, next) ? res.status(404).send(err);
 				req[route.id] = data;
 				next();
 			});
